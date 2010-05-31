@@ -8,7 +8,7 @@ main() {
 	float converted_temp;
 
 	printf("Fahrenheit => Celsius\n", source_temp, converted_temp);
-	for(source_temp=start_num; source_temp <= end_num; source_temp += step) {
+	for(source_temp=end_num; source_temp >= start_num; source_temp -= step) {
 		converted_temp = (5.0/9.0)*(source_temp-32.0);
 		printf("%10u => %7.2f\n", source_temp, converted_temp);
 	}
