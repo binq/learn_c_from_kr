@@ -8,14 +8,13 @@ namespace :temp_convert do
   lib = root + "lib/temp_convert.o"
   src = root + "src/temp_convert.c"
   run = root + "src/runner.c"
-  debug_gcc_result = lambda { |r| puts "gcc: %s" % [r] }
 
   file bin => [lib, run] do
-    raise unless system("gcc -O2 -o %s %s %s" % [bin, lib, run]).tap(&debug_gcc_result)
+    raise unless system("gcc -O2 -o %s %s %s" % [bin, lib, run])
   end
   
   file lib => src do
-    raise unless system("gcc -O2 -o %s -c %s" % [lib, src]).tap(&debug_gcc_result)
+    raise unless system("gcc -O2 -o %s -c %s" % [lib, src])
   end
   
   task :clean do
