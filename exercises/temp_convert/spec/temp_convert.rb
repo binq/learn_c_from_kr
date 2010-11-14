@@ -3,7 +3,7 @@ require 'ffi'
 module TempConvert
   extend FFI::Library
 
-  lib = Pathname(__FILE__).dirname + "../lib/temp_convert.o"
+  lib = Pathname(__FILE__).dirname + "../bin/temp_convert"
   ffi_lib lib.to_s
 
   attach_function :temp_convert, [:float], :float

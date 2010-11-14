@@ -5,16 +5,16 @@ end
 namespace :temp_convert do
   root = Pathname(__FILE__).dirname + "exercises/temp_convert"
   bin = root + "bin/temp_convert"
-  lib = root + "lib/temp_convert.o"
+  lib = root + "lib/temp_convert.dylib"
   src = root + "src/temp_convert.c"
   run = root + "src/runner.c"
 
   file bin => [lib, run] do
-    raise unless system("gcc -O2 -o %s %s %s" % [bin, lib, run])
+    raise unless system("gcc -O2 -o %s -l /Users/vanson/Projects/learn_c_from_kr/exercises/temp_convert/lib/temp_convert.dylib %s" % [bin, lib, run])
   end
   
   file lib => src do
-    raise unless system("gcc -O2 -o %s -c %s" % [lib, src])
+    raise unless system("gcc -dynamiclib -O2 -o %s -c %s" % [lib, src])
   end
   
   task :clean do
