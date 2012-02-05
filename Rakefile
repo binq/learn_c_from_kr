@@ -1,7 +1,7 @@
-%w'pathname ./lib/utils'.each { |libname| require libname }
+%w'pathname ./share/utils'.each { |libname| require libname }
 ROOT = Pathname(__FILE__).dirname.realpath
+extend Utils
 require_all_tasks
-current_excercise = 'temp_convert'
 desc "clean and build the current excercise"
 task :clean_build => '%s:clean_build' % [current_excercise]
 desc "clean the current excercise"

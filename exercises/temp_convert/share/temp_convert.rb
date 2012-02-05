@@ -1,5 +1,4 @@
-require 'ffi'
-require 'pathname'
+%w'ffi yaml pathname'.each { |i| require i }
 module TempConvert
   extend FFI::Library
   name         = "temp_convert"
@@ -7,13 +6,15 @@ module TempConvert
   lib_bin_path = root + "lib/lib%s.dylib" % [name]
   ffi_lib lib_bin_path
   attach_function :temp_convert, [:float], :float
-  attach_function :temp_convert_range, [:float, :float, :float], :void
+  alias_method :calc, :temp_convert
+  module_function :calc
   attach_function :temp_convert_table, [:float, :float, :float], :void
+  alias_method :table, :temp_convert_table
+  attach_function :temp_convert_table_rev, [:float, :float, :float], :void
+  alias_method :reverse_table, :temp_convert_table_rev
 end
 if __FILE__ == $0
   extend TempConvert
-  start_temp = -459.67
-  end_temp = 10000.0
-  step = 20.0
-  temp_convert_table(start_temp, end_temp, step);
+  rpc = YAML::load($stdin.read)
+  send(rpc[:name], *rpc[:arguments])
 end

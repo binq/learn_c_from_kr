@@ -9,10 +9,13 @@ namespace :temp_convert do
   bin_path     = root + "bin/%s" % [name]
   bin_dir      = root + "bin"
   include_path = root + "include"
-  env          = {DYLD_LIBRARY_PATH: lib_dir, LIBRARY_PATH: lib_dir, CPATH: include_path}
+  env = {
+    :DYLD_LIBRARY_PATH => lib_dir, 
+    :LIBRARY_PATH      => lib_dir, 
+    :CPATH             => include_path
+  }
   file bin_path => [lib_bin_path, src_path] do
-    verify_path = lambda { bin_path.exist? }
-    execute("gcc -O3 -l%s -o %s %s" % [name, bin_path, src_path], env, &verify_path)
+    execute("gcc -O3 -l%s -o %s %s" % [name, bin_path, src_path], :env => env)
   end
   file lib_bin_path => lib_src_path do
     execute("gcc -O3 -shared -o %s %s" % [lib_bin_path, lib_src_path])
@@ -21,7 +24,7 @@ namespace :temp_convert do
     spec.pattern = "%s/%s" % [root, 'spec/**/*_spec.rb']
     spec.rspec_opts = ['--backtrace']
   end
-  task :setup_directories => :clean do
+  task :setup_directories do
     FileUtils.mkpath([bin_dir, lib_dir])
   end
   desc 'clean'
